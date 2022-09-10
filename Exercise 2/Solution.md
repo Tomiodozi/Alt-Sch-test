@@ -38,4 +38,4 @@ htop is an interactive process viewer that lets you manage your machine’s reso
 
 uname(short for “Unix name”) prints the operative system information, which comes in handy when you know your current Linux version.
 Most of the time, you’ll be using the -a (–all) flag, since the default output isn’t that useful:
-![uname](images2/linux%20command%2010.PNG)git
+![uname](images2/linux%20command%2010.PNG)
