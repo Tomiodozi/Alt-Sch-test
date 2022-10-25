@@ -15,4 +15,9 @@ Gitlab  git config -l
 git remote -v
 git log
 <li> EXERCISE 6</li>
+cis benchmarks
+<li> EXERCISE 7</li>
+
+<li> EXERCISE 8</li>
+
 </ol>
