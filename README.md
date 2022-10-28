@@ -7,7 +7,7 @@ Customizing vagrant file to private network "dhcp" and the problems that occured
 <li> EXERCISE 2</li>
 10 Different linux commands 
 <li> EXERCISE 3</li>
-Submit the contents of /etc/passwd. /etc/group, /etc/sudoers.
+Contents of /etc/passwd. /etc/group, /etc/sudoers.
 <li> EXERCISE 4</li>
 PHP 7.4
 <li> EXERCISE 5</li>
@@ -19,5 +19,7 @@ cis benchmarks
 <li> EXERCISE 7</li>
 Crontab
 <li> EXERCISE 8</li>
-
+Ansible
+<li> EXERCISE 9</li>
+IP address
 </ol>
