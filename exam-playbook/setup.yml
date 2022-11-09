@@ -15,5 +15,5 @@
     - include: tasks/laravel-repo.yml 
     - include: tasks/composer.yml   
     - include: tasks/apache2.yml
-  #  - include: tasks/postgre.yml
+    - include: tasks/postgre.yml
  

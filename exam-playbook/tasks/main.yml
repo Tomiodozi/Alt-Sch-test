@@ -7,18 +7,21 @@
     - curl
     - apache2
     - unzip
+    - gnupg
     - lsb-release
     - apt-transport-https
     - ca-certificates
-    - gnupg2
     - debconf-utils
     - libaio1
+
 - name: Add ondrej repository for later versions of PHP
   apt_repository: repo='ppa:ondrej/php' update_cache=yes
 
-- name: "PHP and other dependencies"  
+- name: "Install PHP 8.1 and other dependencies"  
   apt: "name={{ item }} state=present"
   loop:
+    - gnupg2
+    - debconf-utils
     - php
     - libapache2-mod-php
     - php8.1-mysql

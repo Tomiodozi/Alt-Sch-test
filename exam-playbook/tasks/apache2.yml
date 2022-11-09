@@ -47,7 +47,7 @@
 
 - name: run a2enmod rewrite
   shell: a2enmod rewrite
-  notify: restart apache
+  notify: restart apache2
   
 ####################
 #
