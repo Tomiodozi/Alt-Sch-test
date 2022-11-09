@@ -1,0 +1,77 @@
+---
+- name: copy apache conf file to server
+  copy:
+    dest: "/etc/apache2/sites-available/laravel.conf"
+    content: |
+      <VirtualHost *:80>
+          ServerAdmin webmaster@tomiodozi.me
+          ServerName tomiodozi.me
+          ServerAlias www.tomiodozi.me
+          DocumentRoot /var/www/laravel/public
+          <Directory /var/www/laravel/public>
+              Options Indexes FollowSymLinks
+              AllowOverride All
+              Require all granted
+          </Directory>
+          ErrorLog ${APACHE_LOG_DIR}/error.log
+          CustomLog ${APACHE_LOG_DIR}/access.log combined
+      </VirtualHost>
+  
+- name: create .htaccess file
+  copy:
+     dest: "{{app_root_dir}}.htaccess"
+     content: |
+          <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteCond %{REQUEST_URI} !^/public/
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteRule ^(.*)$ /public/$1
+            RewriteRule ^(/)?$ public/index.php [L]
+          </IfModule>
+
+- name: Change file ownership, group and permissions
+  file:
+    path: "{{app_root_dir}}"
+    state: directory
+    recurse: true
+    owner: www-data
+    group: www-data
+    mode: '0755'
+             
+- name: a2dissite
+  shell: a2dissite 000-default.conf
+  
+- name: run a2ensite
+  shell: a2ensite laravel.conf
+
+- name: run a2enmod rewrite
+  shell: a2enmod rewrite
+  notify: restart apache
+  
+####################
+#
+# INSTALL SSL CERT
+#
+####################
+- name: install snap
+  apt: name=snapd
+
+- name: install core with snap
+  shell: snap install core
+    
+- name: refresh core with snap
+  shell: snap refresh core
+
+- name: install certbot with snap
+  shell: snap install --classic certbot
+
+- name: link certbot files
+  shell: ln -s /snap/bin/certbot /usr/bin/certbot
+
+- name: install ssl
+  shell: yes | certbot --apache --agree-tos --redirect -m webmaster@tomiodozi.me -d tomiodozi.me
+
+- name: install ssl
+  shell: yes | certbot --apache --agree-tos --redirect -m webmaster@tomiodozi.me -d www.tomiodozi.me
+ 

@@ -1,0 +1,4 @@
+---
+username: tomiodozi
+mysql_passwd: 9876
+app_root_dir: /var/www/laravel   

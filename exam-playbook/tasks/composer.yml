@@ -1,0 +1,29 @@
+---
+- name: Download Composer installer
+  shell: curl -sS https://getcomposer.org/installer | php
+
+- name: Move composer into globally-accessible location
+  shell: 
+    mv composer.phar /usr/local/bin/composer
+    creates=/usr/local/bin/composer
+
+- name: change permission setting for composer
+  shell: chmod +x /usr/local/bin/composer
+
+- name: Run composer update
+  shell: sudo composer update --no-interaction
+         chdir="{{app_root_dir}}"
+
+- name: run composer installer
+  shell: composer install --no-interaction
+         chdir="{{app_root_dir}}"
+
+- name: Migrate Database
+  shell: "{{item}} chdir={{app_root_dir}}"
+  loop:
+    - php artisan key:generate --force
+    - php artisan config:cache
+    - php artisan config:clear
+    - php artisan migrate:fresh --force
+    - php artisan migrate --seed --force
+     

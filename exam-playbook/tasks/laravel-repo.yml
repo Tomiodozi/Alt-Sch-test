@@ -1,0 +1,29 @@
+---
+- name: Clone the laravel app repo
+  git: 
+    repo: https://github.com/f1amy/laravel-realworld-example-app.git
+    dest: {{app_root_dir}}
+    clone: yes
+    force: yes
+
+- name: Change file ownership, group and permissions
+  file:
+    path: {{app_root_dir}}
+    state: directory
+    recurse: true
+    owner: www-data
+    group: www-data
+    mode: '0755'
+  
+- name: Switch to the laravel app directory
+  command: chdir={{app_root_dir}} ls
+
+- name: replace web.php file in routes folder with a custom copy
+  copy:
+    src: ./templates/web.php
+    dest: "{{app_root_dir}}/routes/web.php"
+
+- name: copy .env file to the app directory
+  copy:
+    src: ./templates/env-var
+    dest: "{{app_root_dir}}/.env"

@@ -1,0 +1,55 @@
+---
+- name: Installing Mysql  and dependencies
+  apt: name={{item}} state=latest update_cache=yes
+  loop: 
+    - mysql-server
+    - mysql-client
+    - python3-pip
+    - python3-pymysql
+    - python3-mysqldb
+    
+- name: start and enable mysql service
+  service: name=mysql state=started enabled=yes
+
+- name: run my sql query
+  command: mysql -u root --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '"{{ mysql_passwd }}"';"
+  notify: restart mysql
+  
+- name: create ~/.my.cnf
+  file: 
+    path: ~/.my.cnf
+    state: touch
+    
+- name: insert into ~/.my.cnf
+  blockinfile:
+    path: ~/.my.cnf
+    block: |
+     [client]
+     user={{username}}
+     password={{mysql_passwd}}
+
+- name: sql query flush
+  command: mysql -u root --execute="FLUSH PRIVILEGES"
+  
+- name: Create a mysql database for laravel
+  mysql_db: 
+    login_user: root
+    login_password: "{{mysql_passwd}}"
+    name: "{{username}}_db"
+    state: present
+
+- name: Create a mysql user for laravel
+  mysql_user:
+    login_user: 'root'
+    login_password: "{{ mysql_passwd }}"
+    name: "{{username}}"
+    priv: "{{ username }}.*:ALL,GRANT"
+    host: localhost
+    state: present
+
+- name: Enable remote login to mysql
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: '^bind-address'
+    line: 'bind-address = 0.0.0.0'
+    backup: yes

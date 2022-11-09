@@ -1,0 +1,42 @@
+---
+- name: Install Apache and other packages
+  apt: "name={{ item }} state=present"
+  loop:
+    - git
+    - wget
+    - curl
+    - apache2
+    - unzip
+    - lsb-release
+    - apt-transport-https
+    - ca-certificates
+    - gnupg2
+    - debconf-utils
+    - libaio1
+- name: Add ondrej repository for later versions of PHP
+  apt_repository: repo='ppa:ondrej/php' update_cache=yes
+
+- name: "PHP and other dependencies"  
+  apt: "name={{ item }} state=present"
+  loop:
+    - php
+    - libapache2-mod-php
+    - php8.1-mysql
+    - php8.1-common
+    - php8.1-mysql
+    - php8.1-xml
+    - php8.1-xmlrpc
+    - php8.1-curl
+    - php8.1-gd
+    - php8.1-imagick
+    - php8.1-cli
+    - php8.1-dev
+    - php8.1-imap
+    - php8.1-mbstring
+    - php8.1-opcache
+    - php8.1-soap
+    - php8.1-zip
+    - php8.1-intl
+
+- name: "Start Apache"
+  service: "name=apache2 state=started enabled=yes"

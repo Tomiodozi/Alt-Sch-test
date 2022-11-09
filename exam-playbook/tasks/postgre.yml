@@ -1,0 +1,10 @@
+---
+- name: copy postgre script to vm
+  copy:
+    src: ./templates/postgre.sh
+    dest: /home/azureuser
+
+- name: run postgree script
+  shell: >
+    bash ./postgre.sh
+    chdir=/home/azureuser

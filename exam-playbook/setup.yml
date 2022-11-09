@@ -1,0 +1,19 @@
+---
+- name: Configure webserver with LAMP
+  hosts: host_ip
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  handlers:
+    - include: handlers/handlers.yml
+     
+  tasks:
+    - include: tasks/main.yml
+    - include: tasks/mysql.yml
+    - include: tasks/laravel-repo.yml 
+    - include: tasks/composer.yml   
+    - include: tasks/apache2.yml
+  #  - include: tasks/postgre.yml
+ 
