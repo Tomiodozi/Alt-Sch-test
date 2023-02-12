@@ -1,5 +1,5 @@
 APP_NAME="laravel-app"
-APP_URL=20.77.7.1
+APP_URL=20.68.196.98
 APP_KEY=base64:EHY1DRgpjN0inqYSNxXbdvoM/QUyc0WooSR4y7Sm3co=
 DB_CONNECTION=mysql
 DB_HOST=localhost
